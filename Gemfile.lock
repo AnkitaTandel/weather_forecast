@@ -147,6 +147,7 @@ GEM
       racc (~> 1.4)
     nokogiri (1.16.2-x86_64-linux)
       racc (~> 1.4)
+    openweathermap (0.2.3)
     psych (5.1.2)
       stringio
     public_suffix (5.0.4)
@@ -253,6 +254,7 @@ DEPENDENCIES
   debug
   importmap-rails
   jbuilder
+  openweathermap
   puma (>= 5.0)
   rails (~> 7.1.3, >= 7.1.3.2)
   redis (>= 4.0.1)
