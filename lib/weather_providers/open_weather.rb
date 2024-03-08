@@ -21,7 +21,11 @@ module WeatherProviders
     end
 
     def weather_by_zip_code
-      client.current_zip(search_value, geocode_country_code(search_value) || 'US')
+      client.current_zip(
+        zip: search_value,
+        units: 'metric',
+        country: geocode_country_code(search_value) || 'US'
+      )
     rescue => e
     end
   end

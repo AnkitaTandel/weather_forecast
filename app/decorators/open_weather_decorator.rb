@@ -1,24 +1,55 @@
 class OpenWeatherDecorator < Draper::Decorator
-  attr_reader :forecast_data
+  attr_reader :forecast_data, :cached
 
-  def initialize(forecast_data)
+  def initialize(forecast_data, cached=false)
     @forecast_data = forecast_data
+    @cached = cached
   end
 
   def decorate
     {
-      country: forecast_data['sys']['country'],
-      city: forecast_data['name'],
-      country: forecast_data['sys']['country'],
-      temp_min: formatted_temp(forecast_data['main']['temp_min']),
-      temp_max: formatted_temp(forecast_data['main']['temp_max']),
-      temp: formatted_temp(forecast_data['main']['temp']),
-      humidity: forecast_data['main']['humidity'],
-      pressure: forecast_data['main']['pressure'],
+      country: country,
+      city: city,
+      temperature: temperature,
+      maximum_temperature: maximum_temperature,
+      minimum_temperature: minimum_temperature,
+      humidity: humidity,
+      pressure: pressure,
+      cached: cached ? 'Result pulled from cache.' : 'Result pulled from API.'
     }
   end
 
+  private
+
   def formatted_temp(temp)
-    temp
+    "#{temp} C"
+  end
+
+  def temperature
+    formatted_temp(forecast_data.dig('main', 'temp'))
+  end
+
+  def minimum_temperature
+    formatted_temp(forecast_data.dig('main', 'temp_min'))
+  end
+
+  def maximum_temperature
+    formatted_temp(forecast_data.dig('main', 'temp_max'))
+  end
+
+  def humidity
+    formatted_temp(forecast_data.dig('main', 'humidity'))
+  end
+
+  def pressure
+    formatted_temp(forecast_data.dig('main', 'pressure'))
+  end
+
+  def country
+    forecast_data.dig('sys', 'country')
+  end
+
+  def city
+    forecast_data.dig('name')
   end
 end

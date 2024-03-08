@@ -22,9 +22,4 @@
       <% end %>
     </tbody>
   </table>
-  <% if @forecast['cached'] %>
-    <p>Result pulled from cache.</p>
-  <% end %>
-<% elsif params[:zip_code].present? %>
-  <p>No forecast available for the provided zip code.</p>
 <% end %>

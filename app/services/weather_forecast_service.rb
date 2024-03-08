@@ -1,17 +1,19 @@
 class WeatherForecastService
 
-  attr_reader :search_key, :search_value
+  attr_reader :search_key, :search_value, :is_cached_forecast
 
   def initialize(data)
     @search_key = data.keys.first
     @search_value = data[search_key]
+    @is_cached_forecast = false
   end
 
   def call
     forecast_data = cached_result || fetch_forecast_data
 
+    save_to_cache(forecast_data) unless is_cached_forecast
+
     if forecast_data
-      save_to_cache(forecast_data)
       decorate_forecast(forecast_data)
     else
       { 'error': 'Unable to fetch weather data.' }
@@ -21,11 +23,13 @@ class WeatherForecastService
   private
 
   def cached_result
-    Rails.cache.read(search_value)
+    data = Rails.cache.read(search_value)
+    @is_cached_forecast = true if data
+    data
   end
 
   def fetch_forecast_data
-    provider_class.new(search_key, search_value).get_data.merge(cached: false)
+    provider_class.new(search_key, search_value).get_data
   end
 
   def save_to_cache(forecast_data)
@@ -37,7 +41,7 @@ class WeatherForecastService
   end
 
   def decorate_forecast(forecast_data)
-    "#{weather_client_provider}_decorator".classify.safe_constantize.new(forecast_data).decorate
+    "#{weather_client_provider}_decorator".classify.safe_constantize.new(forecast_data, is_cached_forecast).decorate
   end
 
   def weather_client_provider
