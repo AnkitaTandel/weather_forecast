@@ -33,6 +33,10 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
+  # OpenWeather api key
+  config.open_weather_api_key = '148e0cd1e413c313797bb247e8a30bd8'
+  config.weather_provider = 'open_weather'
+
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
 

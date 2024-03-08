@@ -1,0 +1,31 @@
+<h1>Weather Forecast</h1>
+
+<%= form_tag root_path, method: :get do %>
+  <%= label_tag 'zip_code', 'Enter Zip Code:' %>
+  <%= text_field_tag 'search[zip_code]', (params[:search][:zip_code] if params[:search]), required: true %>
+  <%= submit_tag 'Get Forecast' %>
+<% end %>
+
+<% if @forecast.present? %>
+  <table>
+    <thead>
+      <tr>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @forecast.each do |attribute, value| %>
+        <tr>
+          <td><%= attribute %></td>
+          <td><%= value %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <% if @forecast['cached'] %>
+    <p>Result pulled from cache.</p>
+  <% end %>
+<% elsif params[:zip_code].present? %>
+  <p>No forecast available for the provided zip code.</p>
+<% end %>
