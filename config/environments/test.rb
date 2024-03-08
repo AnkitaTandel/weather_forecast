@@ -61,4 +61,8 @@ Rails.application.configure do
 
   # Raise error when a before_action's only/except options reference missing actions
   config.action_controller.raise_on_missing_callback_actions = true
+
+  # OpenWeather api key
+  config.open_weather_api_key = '148e0cd1e413c313797bb247e8a30bd8'
+  config.weather_provider = 'open_weather'
 end

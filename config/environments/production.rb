@@ -94,4 +94,9 @@ Rails.application.configure do
   # ]
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+
+
+  # OpenWeather api key
+  config.open_weather_api_key = ENV['OPEN_WEATHER_API_KEY']
+  config.weather_provider = ENV['WEATHER_PROVIDER']
 end
