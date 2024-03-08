@@ -1,10 +1,12 @@
 class WeatherForecastService
+  include GeocoderSearch
 
-  attr_reader :search_key, :search_value, :is_cached_forecast
+  attr_reader :search_key, :search_value, :is_cached_forecast, :zip_code
 
   def initialize(data)
     @search_key = data.keys.first
     @search_value = data[search_key]
+    @zip_code = geocode_zip_code(search_value)
     @is_cached_forecast = false
   end
 
@@ -23,17 +25,20 @@ class WeatherForecastService
   private
 
   def cached_result
-    data = Rails.cache.read(search_value)
+    return unless zip_code.present?
+
+    data = Rails.cache.read(zip_code)
     @is_cached_forecast = true if data
     data
   end
 
   def fetch_forecast_data
     provider_class.new(search_key, search_value).get_data
+  rescue => _e
   end
 
   def save_to_cache(forecast_data)
-    Rails.cache.write(search_value, forecast_data, expires_in: 30.minutes)
+    Rails.cache.write(zip_code, forecast_data, expires_in: 30.minutes) if zip_code
   end
 
   def provider_class

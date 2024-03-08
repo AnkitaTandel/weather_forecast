@@ -36,7 +36,7 @@ Rails.application.configure do
   end
 
   # OpenWeather api key
-  config.open_weather_api_key = '148e0cd1e413c313797bb247e8a30bd8'
+  config.open_weather_api_key = '45c5457ff7fbb01cc39d223e48e711ee'
   config.weather_provider = 'open_weather'
 
   # Store uploaded files on the local file system (see config/storage.yml for options).

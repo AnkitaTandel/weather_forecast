@@ -1,8 +1,8 @@
 <h1>Weather Forecast</h1>
 
 <%= form_tag root_path, method: :get do %>
-  <%= label_tag 'zip_code', 'Enter Zip Code:' %>
-  <%= text_field_tag 'search[zip_code]', (params[:search][:zip_code] if params[:search]), required: true %>
+  <%= label_tag 'address', 'Enter Address:' %>
+  <%= text_field_tag 'search[address]', (params[:search][:address] if params[:search]), required: true %>
   <%= submit_tag 'Get Forecast' %>
 <% end %>
 

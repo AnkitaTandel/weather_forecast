@@ -20,13 +20,16 @@ module WeatherProviders
       raise 'Unable to fetch weather data. Please provide correct inputs.'
     end
 
-    def weather_by_zip_code
-      client.current_zip(
-        zip: search_value,
-        units: 'metric',
-        country: geocode_country_code(search_value) || 'US'
+    private
+
+    def weather_by_address
+      client.current_weather(
+        zip: geocode_zip_code(search_value),
+        city: geocode_city(search_value),
+        state: geocode_state(search_value),
+        country: geocode_country_code(search_value) || 'US',
+        units: 'metric'
       )
-    rescue => e
     end
   end
 end

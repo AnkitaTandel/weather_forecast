@@ -38,11 +38,11 @@ class OpenWeatherDecorator < Draper::Decorator
   end
 
   def humidity
-    formatted_temp(forecast_data.dig('main', 'humidity'))
+    forecast_data.dig('main', 'humidity')
   end
 
   def pressure
-    formatted_temp(forecast_data.dig('main', 'pressure'))
+    forecast_data.dig('main', 'pressure')
   end
 
   def country
