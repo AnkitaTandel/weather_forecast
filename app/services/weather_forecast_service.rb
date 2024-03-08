@@ -8,15 +8,11 @@ class WeatherForecastService
   end
 
   def call
-    forecast_data = if cached_result.present?
-                      cached_result.merge!(cached: true)
-                    else
-                      provider_class.new(search_key, search_value).get_data
-                    end
+    forecast_data = cached_result || fetch_forecast_data
 
     if forecast_data
       save_to_cache(forecast_data)
-      decorator_class.new(forecast_data).decorate
+      decorate_forecast(forecast_data)
     else
       { 'error': 'Unable to fetch weather data.' }
     end
@@ -25,25 +21,23 @@ class WeatherForecastService
   private
 
   def cached_result
-    cached_forecast = Rails.cache.read(search_value)
-    return nil unless cached_forecast
+    Rails.cache.read(search_value)
+  end
 
-    cached_forecast
+  def fetch_forecast_data
+    provider_class.new(search_key, search_value).get_data.merge(cached: false)
   end
 
   def save_to_cache(forecast_data)
-    # Cache the forecast for 30 minutes
     Rails.cache.write(search_value, forecast_data, expires_in: 30.minutes)
   end
 
   def provider_class
-    provider_name = "WeatherProviders::#{weather_client_provider.classify}"
-    provider_name.safe_constantize
+    "WeatherProviders::#{weather_client_provider.classify}".safe_constantize
   end
 
-  def decorator_class
-    decorator_name = "#{weather_client_provider}_decorator".classify
-    decorator_name.safe_constantize
+  def decorate_forecast(forecast_data)
+    "#{weather_client_provider}_decorator".classify.safe_constantize.new(forecast_data).decorate
   end
 
   def weather_client_provider
