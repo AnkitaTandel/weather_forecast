@@ -2,10 +2,10 @@
 
 #### This application provides weather forecast information based on the input of a zipcode.
 
-
 1. Accepts an address, including zip code, as input.
 
 2. Displays the weather forecast for the given zip code.
+
 example
 ```
 Country	DZ
@@ -16,6 +16,7 @@ Minimum temperature	11.04 C
 Humidity	83 C
 Pressure	1015 C
 Cached	Result pulled from API.
+
 ```
 
 3. It also caches the forecast for 30 minutes for all subsequent requests by zip codes.
